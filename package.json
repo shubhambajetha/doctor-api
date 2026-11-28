@@ -1,14 +1,22 @@
 {
   "name": "apidoctor",
+  "version": "1.0.0",
   "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
   "scripts": {
-    "build": "turbo run build",
-    "dev": "turbo run dev",
+    "dev": "concurrently -k -n WEB,SERVER \"npm run dev --workspace=web\" \"npm run dev --workspace=server\"",
+    "dev:web": "npm run dev --workspace=web",
+    "dev:server": "npm run dev --workspace=server",
+    "build": "npm run build --workspace=web && npm run build --workspace=server",
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "check-types": "turbo run check-types"
   },
   "devDependencies": {
+    "concurrently": "^10.0.7",
     "prettier": "3.9.6",
     "turbo": "^2.11.13",
     "typescript": "7.0.2"
